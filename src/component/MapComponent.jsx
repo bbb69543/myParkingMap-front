@@ -1,4 +1,5 @@
 import { useEffect, useState, useRef } from "react";
+import axios from "axios";
 import "leaflet/dist/leaflet.css"; // 載入 Leaflet 預設樣式
 import L from "leaflet"; // 匯入 Leaflet
 import ReturnLocationBtn from "./ReturnLocationBtn";
@@ -11,6 +12,16 @@ const MapComponent = () => {
     const userCircleRef = useRef(null); // 儲存使用者位置的標記
     const userLocationRef = useRef(null); // 儲存最新的使用者位置
     const isManualMove = useRef(false); // 是否為手動移動地圖
+
+    // 向後端要停車場資料
+    const fetchParkingLotAPI = async () => {
+        const response = await axios.get("http://localhost:3000/api/parkingLot");
+        console.log(response.data);
+    };
+
+    useEffect(() => {
+        fetchParkingLotAPI();
+    }, []);
 
     useEffect(() => {
         const newMap = L.map("map").setView(defaultLocation, 13);
