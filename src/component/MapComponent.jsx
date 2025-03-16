@@ -12,13 +12,19 @@ const MapComponent = () => {
     const userCircleRef = useRef(null); // 儲存使用者位置的標記
     const userLocationRef = useRef(null); // 儲存最新的使用者位置
     const isManualMove = useRef(false); // 是否為手動移動地圖
+    const [parkingLots, setParkingLots] = useState([]);
 
     // 向後端要停車場資料
     const fetchParkingLotAPI = async () => {
-        const response = await axios.get("http://localhost:3000/api/parkingLot");
-        console.log(response.data);
+        try {
+            const response = await axios.get("http://localhost:3000/api/parkingLot");
+            setParkingLots(response.data); // 更新 state
+        } catch (error) {
+            console.error("獲取停車場資料失敗:", error);
+        }
     };
 
+    // 在組件載入時請求停車場資料
     useEffect(() => {
         fetchParkingLotAPI();
     }, []);
@@ -112,6 +118,26 @@ const MapComponent = () => {
             };
         }
     }, [map]);
+
+    // 在組件載入時請求停車場資料
+    useEffect(() => {
+        fetchParkingLotAPI();
+    }, []);
+
+    // 在地圖建立後，根據 parkingLots 更新 Marker
+    useEffect(() => {
+        if (!map) return;
+
+        const markers = parkingLots.map((item) => {
+            return L.marker([item.CarParkPosition.PositionLat, item.CarParkPosition.PositionLon])
+                .bindPopup(String(item.CarParkName.Zh_tw))
+                .addTo(map);
+        });
+
+        return () => {
+            markers.forEach(marker => map.removeLayer(marker)); // 移除舊的 Marker，防止重疊
+        };
+    }, [map, parkingLots]);
 
     // **手動返回使用者位置**
     const handleReturnToLocation = () => {
