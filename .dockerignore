@@ -1,0 +1,37 @@
+# Node.js
+node_modules/
+
+# Logs
+*.log
+
+# Environment variables
+.env
+
+# Docker and Docker Compose related
+docker-compose.override.yml
+
+# IDE files
+.vscode/
+.idea/
+
+# Temporary and build files
+*.swp
+*.bak
+*.tmp
+build/
+dist/
+tmp/
+
+# Version control files
+.git/
+.gitignore
+
+# Test files
+tests/
+test/
+*.test.js
+*.spec.js
+
+# Other temporary files
+.DS_Store
+Thumbs.db
