@@ -26,25 +26,25 @@ const MapComponent = () => {
                 console.error("獲取停車場資料失敗:", error);
             }
         };
-    
+
         fetchParkingLotAPI();
     }, []);
 
     // 在地圖建立後，根據 parkingLots 更新 Marker
     useEffect(() => {
         if (!map) return;
-    
+
         // 首先移除舊的 markers
         map.eachLayer((layer) => {
             if (layer instanceof L.Marker) {
                 map.removeLayer(layer);
             }
         });
-    
+
         // 然後創建新的 markers
         parkingLots.forEach((item) => {
             L.marker([item.CarParkPosition.PositionLat, item.CarParkPosition.PositionLon])
-                .bindPopup(String(item.CarParkName.Zh_tw))
+                .bindPopup(String(item.CarParkName))
                 .addTo(map);
         });
     }, [map, parkingLots]);
