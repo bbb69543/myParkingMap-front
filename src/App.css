@@ -25,3 +25,80 @@
   height: 100%;
   width: 100%;
 }
+
+.carpark-card {
+  font-family: sans-serif;
+  width: 300px;
+  padding: 0;
+}
+
+.carpark-name {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.carpark-address,
+.carpark-tel,
+.carpark-type {
+  font-size: 14px;
+  margin-top: 4px;
+}
+
+
+.space-grid {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 12px;
+  gap: 8px;
+}
+
+.space-box {
+  /* width: 70px; */
+  border: 0.5px solid #d2d2d2;
+  border-radius: 6px;
+  text-align: center;
+  padding: 4px;
+}
+
+.space-icon {
+  font-size: 24px;
+}
+
+.space-type {
+  font-size: 12px;
+}
+
+.space-count {
+  margin-top: 4px;
+}
+
+.available {
+  color: #3366ff;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.unavailable {
+  color: #b2b2b2;
+}
+
+.total {
+  font-size: 12px;
+}
+
+.carpark-price {
+  margin-top: 12px;
+  font-size: 14px;
+}
+
+.carpark-nav {
+  display: flex;
+  align-items: center;
+  margin-top: 8px;
+  cursor: pointer;
+  color: #0077aa;
+}
+
+.nav-icon {
+  margin-right: 4px;
+}

@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
+import ReactDOMServer from 'react-dom/server';
 import axios from "axios";
 import "leaflet/dist/leaflet.css"; // 載入 Leaflet 預設樣式
 import L from "leaflet"; // 匯入 Leaflet
 import ReturnLocationBtn from "./ReturnLocationBtn";
+import CarParkData from "./CarParkData";
 import useLeafletMap from "./hooks/useLeafletMap"; // 引入新 Hook
 import useUserLocation from "./hooks/useUserLocation";
 
@@ -22,12 +24,19 @@ const MapComponent = () => {
             try {
                 const response = await axios.get("http://localhost:3000/api/parkingLot");
                 setParkingLots(response.data); // 更新 state
+                console.log("獲取資料成功")
             } catch (error) {
                 console.error("獲取停車場資料失敗:", error);
             }
         };
-
+        // 立即執行一次
         fetchParkingLotAPI();
+
+        // 設定定時器，每 5 分鐘請求一次
+        const intervalId = setInterval(fetchParkingLotAPI, 300000);
+        // 清理副作用，避免記憶體洩漏
+        return () => clearInterval(intervalId);
+
     }, []);
 
     // 在地圖建立後，根據 parkingLots 更新 Marker
@@ -41,13 +50,18 @@ const MapComponent = () => {
             }
         });
 
+        const refreshTime = parkingLots.UpdateTime;
         // 然後創建新的 markers
-        parkingLots.forEach((item) => {
-            L.marker([item.CarParkPosition.PositionLat, item.CarParkPosition.PositionLon])
-                .bindPopup(String(item.CarParkName))
+        parkingLots.Data.forEach((item) => {
+            const htmlString = ReactDOMServer.renderToString(<CarParkData data={item} time={refreshTime}/>);
+            L.marker([
+                item.CarParkPosition.PositionLat,
+                item.CarParkPosition.PositionLon
+            ])
+                .bindPopup(htmlString)
                 .addTo(map);
         });
-    }, [map, parkingLots]);
+    }, [parkingLots]);
 
     // **手動返回使用者位置**
     const handleReturnToLocation = () => {
