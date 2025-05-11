@@ -53,10 +53,12 @@ const MapComponent = () => {
         const refreshTime = parkingLots.UpdateTime;
         // 然後創建新的 markers
         parkingLots.Data.forEach((item) => {
-            const htmlString = ReactDOMServer.renderToString(<CarParkData data={item} time={refreshTime}/>);
+            const parkLat = item.CarParkPosition.PositionLat;
+            const parkLon = item.CarParkPosition.PositionLon;
+            const htmlString = ReactDOMServer.renderToString(<CarParkData data={item} time={refreshTime} parkLat={parkLat} parkLon={parkLon}/>);
             L.marker([
-                item.CarParkPosition.PositionLat,
-                item.CarParkPosition.PositionLon
+                parkLat,
+                parkLon
             ])
                 .bindPopup(htmlString)
                 .addTo(map);
