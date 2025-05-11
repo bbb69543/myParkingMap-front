@@ -15,7 +15,7 @@ const MapComponent = () => {
     const { map, isManualMove } = useLeafletMap(defaultLocation); // 使用 Hook 初始化 Leaflet 地圖
     const { userLocationRef } = useUserLocation(map, defaultLocation, isManualMove, MAX_DISTANCE);
 
-    const [parkingLots, setParkingLots] = useState([]);
+    const [parkingLots, setParkingLots] = useState({ Data: [], UpdateTime: '' });
 
 
     useEffect(() => {
