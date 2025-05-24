@@ -1,19 +1,14 @@
-# 使用 Node.js 作為基礎映像
-FROM node:23-alpine
-
-# 設定工作目錄
+# Dockerfile (for production build)
+FROM node:18-alpine as build
 WORKDIR /app
-
-# 複製 package.json 和 package-lock.json
 COPY package.json package-lock.json ./
-
-# 安裝依賴
-RUN npm install
-
-# 複製專案檔案
+RUN npm ci
 COPY . .
+RUN npm run build
 
-
-# 開啟 Vite Dev Server，並監聽所有網路介面
-EXPOSE 5173
-CMD ["npm", "run", "dev", "--", "--host"]
+# Serve with Nginx
+FROM nginx:alpine
+COPY --from=build /app/dist /usr/share/nginx/html
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
