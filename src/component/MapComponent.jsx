@@ -52,14 +52,19 @@ const MapComponent = () => {
 
         const refreshTime = parkingLots.UpdateTime;
         // 然後創建新的 markers
+
+        const myIcon = L.icon({
+            iconUrl: '/icons/marker.png',
+            iconSize: [40, 40],
+            iconAnchor: [20, 40],
+            popupAnchor: [1, -34],
+        });
+
         parkingLots.Data.forEach((item) => {
             const parkLat = item.CarParkPosition.PositionLat;
             const parkLon = item.CarParkPosition.PositionLon;
-            const htmlString = ReactDOMServer.renderToString(<CarParkData data={item} time={refreshTime} parkLat={parkLat} parkLon={parkLon}/>);
-            L.marker([
-                parkLat,
-                parkLon
-            ])
+            const htmlString = ReactDOMServer.renderToString(<CarParkData data={item} time={refreshTime} parkLat={parkLat} parkLon={parkLon} />);
+            L.marker([parkLat, parkLon], { icon: myIcon })
                 .bindPopup(htmlString)
                 .addTo(map);
         });
