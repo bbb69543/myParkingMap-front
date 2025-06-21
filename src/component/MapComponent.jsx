@@ -22,7 +22,8 @@ const MapComponent = () => {
         // 向後端API要停車場資料
         const fetchParkingLotAPI = async () => {
             try {
-                const response = await axios.get("http://localhost:3000/api/parkingLot");
+                // const response = await axios.get("http://localhost:3000/api/parkingLot");
+                const response = await axios.get("https://be3negettj.execute-api.ap-northeast-1.amazonaws.com/dev/api/parkingLot");
                 setParkingLots(response.data); // 更新 state
                 console.log("獲取資料成功")
             } catch (error) {
